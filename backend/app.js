@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const userRouter = require("./routes/user");
+const sauceRouter = require("./routes/sauce");
+const likesRouter = require("./routes/likes");
+const path = require("path");
 
 const app = express();
 mongoose
@@ -25,6 +28,12 @@ app.use((req, res, next) => {
   next();
 });
 
+//accer au body.req:parse du contenue json(une autre methode:bodyparser.json)
+app.use(express.json());
+
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRouter);
+app.use("/api/sauces", sauceRouter);
+app.use("/api/sauces", likesRouter);
 
 module.exports = app;

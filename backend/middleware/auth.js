@@ -1,3 +1,5 @@
+//verrifier le token frontend et permettre uniquement a des requete authentifier de reussire
+
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
