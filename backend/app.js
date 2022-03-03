@@ -1,4 +1,7 @@
 const express = require("express");
+const app = express();
+const helmet = require("helmet");
+
 const mongoose = require("mongoose");
 
 const userRouter = require("./routes/user");
@@ -6,7 +9,8 @@ const sauceRouter = require("./routes/sauce");
 const likesRouter = require("./routes/likes");
 const path = require("path");
 
-const app = express();
+module.import = "dotenv/config";
+
 mongoose
   .connect(
     "mongodb+srv://manal:ilyan2020@cluster0.owdzz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -27,10 +31,11 @@ app.use((req, res, next) => {
   );
   next();
 });
+//importer le package helmet
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-//accer au body.req:parse du contenue json(une autre methode:bodyparser.json)
+//accée au body.req:parse du contenue json(une autre methode:bodyparser.json)
 app.use(express.json());
-
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRouter);
 app.use("/api/sauces", sauceRouter);
