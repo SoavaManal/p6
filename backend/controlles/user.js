@@ -4,6 +4,8 @@ const User = require("../models/user");
 
 //creer un compte utilisateur
 exports.signup = (req, res, next) => {
+  // if (!users.email) {
+  //si email n'existe pas dans la BD
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -17,6 +19,7 @@ exports.signup = (req, res, next) => {
         .catch((error) => res.status(400).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
+  //}
 };
 
 //verrifier le compte d'un utilisateur
