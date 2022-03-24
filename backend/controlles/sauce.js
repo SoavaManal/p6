@@ -80,20 +80,25 @@ exports.deleteSauce = (req, res, next) => {
         });
       }
       // Vérification que la sauce appartient à la personne qui effectue la requête
-      if (sauce.userId === req.auth.userId) {
-        //nom du fichier à supprimer
-        const filename = sauce.imageUrl.split("/images")[1];
-        fs.unlink(`images/${filename}`, () => {
-          // Suppression de la sauce dans la base de données
-          Sauce.deleteOne({ _id: req.params.id })
-            .then(() => {
-              res.status(201).json({ message: "Sauce supprimée !" });
-            })
-            .catch((error) => {
-              res.status(400).json({ error });
-            });
-        });
+      if (sauce.userId !== req.auth.userId) {
+        return res.status(401).json({ message: "Unauthorized request" });
       }
+      //nom du fichier à supprimer
+      const filename = sauce.imageUrl.split("/images")[1];
+      fs.unlink(`images/${filename}`, () => {
+        // Suppression de la sauce dans la base de données
+        Sauce.deleteOne({ _id: req.params.id })
+          .then(() => {
+            res.status(201).json({ message: "Sauce supprimée !" });
+          })
+          .catch((error) => {
+            res.status(400).json({ error });
+          });
+      });
+
+      // else {
+      //   throw error;
+      // }
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -110,6 +115,6 @@ exports.getAllSauces = (req, res, next) => {
 //GET:affichage d'une seul sauce
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
-    .then((sauces) => res.status(200).json(sauces))
+    .then((sauce) => res.status(200).json(sauce))
     .catch((error) => res.status(404).json({ error }));
 };

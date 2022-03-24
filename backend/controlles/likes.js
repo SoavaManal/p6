@@ -10,7 +10,7 @@ exports.likeOrDislike = function (req, res, next) {
         case 1: //like=1
           //si le id_utilisateur n'est pas encore dans le usersLiked l'utilisateur peut liké
           //les likes incrémente de 1 et le userId se rajoute au tableau usersLiked
-          if (!sauce.usersLiked.includes(userId) && like === 1) {
+          if (!sauce.usersLiked.includes(userId)) {
             Sauce.updateOne(
               { _id: req.params.id },
               { $inc: { likes: 1 }, $push: { usersLiked: userId } }
@@ -26,7 +26,7 @@ exports.likeOrDislike = function (req, res, next) {
         case -1: //dislike=1
           //si le id_utilisateur n'est pas encore dans le usersDisliked l'utilisateur peut disliké
           //le dilike incrémente de 1 et le userId se rajoute au tableau usersDisliked
-          if (!sauce.usersDisliked.includes(userId) && like === -1) {
+          if (!sauce.usersDisliked.includes(userId)) {
             Sauce.updateOne(
               { _id: req.params.id },
               {

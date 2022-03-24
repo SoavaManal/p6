@@ -3,16 +3,16 @@ const multer = require("multer");
 //generer les extenssions du fichiers
 const MIME_TYPES = {
   "image/jpg": "jpg",
-  "image/jpeg": "jpg",
+  "image/jpeg": "jpeg",
   "image/png": "png",
 };
-
+//diskStorage: configure le chemin et le nom du fichier
 const storage = multer.diskStorage({
-  //enregister les fichiers dans le dossier images
+  //dans quelle dossier on va enregistrer nos images
   destination: (req, file, callback) => {
     callback(null, "images");
   },
-  //utiliser le nom d'origine, de remplacer les espaces par des underscores
+  //avec quelle nom on va stocké nos images
   filename: (req, file, callback) => {
     const name = file.originalname.split(" ").join("_");
     const extension = MIME_TYPES[file.mimetype];
